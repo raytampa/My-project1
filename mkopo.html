@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mkopo Extra - Quick Loans</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background pattern */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.1) 75%),
+                linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.1) 75%);
+            background-size: 60px 60px;
+            background-position: 0 0, 0 30px, 30px -30px, -30px 0px;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding-top: 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .tagline {
+            font-size: 16px;
+            font-weight: 400;
+            opacity: 0.95;
+            margin-bottom: 30px;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(255,255,255,0.95);
+            border-radius: 25px;
+            padding: 20px 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .feature {
+            text-align: center;
+            flex: 1;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 8px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .icon-money { background: #FFF3CD; color: #856404; }
+        .icon-check { background: #D4EDDA; color: #155724; }
+        .icon-trophy { background: #FCE4EC; color: #C2185B; }
+        .icon-time { background: #E3F2FD; color: #1976D2; }
+
+        .form-section {
+            background: rgba(255,255,255,0.95);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .form-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2E7D32;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .steps {
+            margin-bottom: 30px;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #424242;
+        }
+
+        .step-number {
+            background: #4CAF50;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #2E7D32;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #9E9E9E;
+        }
+
+        .loan-amount-section {
+            margin-bottom: 25px;
+        }
+
+        .amount-slider {
+            margin: 20px 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #E0E0E0;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #4CAF50;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .amount-display {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #2E7D32;
+            margin: 15px 0;
+        }
+
+        .amount-range {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #757575;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
+            color: white;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+
+        .btn-secondary:hover {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .arrow {
+            font-size: 18px;
+        }
+
+        .success-message {
+            background: #D4EDDA;
+            color: #155724;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .terms {
+            font-size: 12px;
+            color: #757575;
+            text-align: center;
+            margin-top: 20px;
+            line-height: 1.4;
+        }
+
+        .terms a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                max-width: 100%;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .tagline {
+                font-size: 14px;
+            }
+
+            .features {
+                padding: 15px 5px;
+            }
+
+            .feature-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+
+            .form-section {
+                padding: 25px 20px;
+            }
+
+            .form-title {
+                font-size: 20px;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">Mkopo Extra - ChapChap</div>
+            <div class="tagline">Quick and Easy loans at your fingertips</div>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon icon-money">💰</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon icon-check">✓</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon icon-trophy">🏆</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon icon-time">⏱️</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Welcome Section -->
+        <div id="welcome-section" class="form-section">
+            <div class="form-title">GET INSTANT LOAN IN 3 SIMPLE STEPS</div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>Create an account / Log in</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>Enter your identification details</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>Instantly access our services</div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="showRegistration()">
+                REGISTER
+                <span class="arrow">→</span>
+            </button>
+            
+            <button class="btn btn-secondary" onclick="showLogin()">
+                LOGIN
+                <span class="arrow">→</span>
+            </button>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="registration-section" class="form-section hidden">
+            <div class="form-title">CREATE YOUR ACCOUNT</div>
+            
+            <form id="registration-form">
+                <div class="form-group">
+                    <label class="form-label" for="fullName">Full Name</label>
+                    <input type="text" id="fullName" class="form-input" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="idNumber">ID Number</label>
+                    <input type="text" id="idNumber" class="form-input" placeholder="Enter your ID number" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="phoneNumber">Phone Number</label>
+                    <input type="tel" id="phoneNumber" class="form-input" placeholder="e.g., +254700000000" required>
+                </div>
+
+                <div class="loan-amount-section">
+                    <label class="form-label">Loan Amount (KSH)</label>
+                    <div class="amount-display" id="amountDisplay">KSH 5,000</div>
+                    <div class="amount-slider">
+                        <input type="range" id="loanAmount" class="slider" min="1000" max="50000" value="5000" step="500">
+                    </div>
+                    <div class="amount-range">
+                        <span>KSH 1,000</span>
+                        <span>KSH 50,000</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    APPLY FOR LOAN
+                    <span class="arrow">→</span>
+                </button>
+            </form>
+
+            <button class="btn btn-secondary" onclick="showWelcome()">
+                ← BACK
+            </button>
+
+            <div class="success-message" id="successMessage">
+                ✅ Application submitted successfully! We'll contact you within 24 hours.
+            </div>
+
+            <div class="terms">
+                By applying, you agree to our <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login-section" class="form-section hidden">
+            <div class="form-title">LOGIN TO YOUR ACCOUNT</div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="loginPhone">Phone Number</label>
+                    <input type="tel" id="loginPhone" class="form-input" placeholder="Enter your registered phone number" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="loginId">ID Number</label>
+                    <input type="text" id="loginId" class="form-input" placeholder="Enter your ID number" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="loginBtn">
+                    LOGIN
+                    <span class="arrow">→</span>
+                </button>
+            </form>
+
+            <button class="btn btn-secondary" onclick="showWelcome()">
+                ← BACK
+            </button>
+
+            <div class="success-message" id="loginSuccessMessage">
+                ✅ Login successful! Welcome back to Mkopo Extra.
+            </div>
+
+            <div class="terms">
+                Don't have an account? <a href="#" onclick="showRegistration()">Register here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Amount slider functionality
+        const loanSlider = document.getElementById('loanAmount');
+        const amountDisplay = document.getElementById('amountDisplay');
+
+        if (loanSlider && amountDisplay) {
+            loanSlider.addEventListener('input', function() {
+                const amount = parseInt(this.value).toLocaleString();
+                amountDisplay.textContent = `KSH ${amount}`;
+            });
+        }
+
+        // Navigation functions
+        function showWelcome() {
+            document.getElementById('welcome-section').classList.remove('hidden');
+            document.getElementById('registration-section').classList.add('hidden');
+            document.getElementById('login-section').classList.add('hidden');
+        }
+
+        function showRegistration() {
+            document.getElementById('welcome-section').classList.add('hidden');
+            document.getElementById('registration-section').classList.remove('hidden');
+            document.getElementById('login-section').classList.add('hidden');
+        }
+
+        function showLogin() {
+            document.getElementById('welcome-section').classList.add('hidden');
+            document.getElementById('registration-section').classList.add('hidden');
+            document.getElementById('login-section').classList.remove('hidden');
+        }
+
+        // Form submission handlers
+        document.getElementById('registration-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Show loading state
+            submitBtn.innerHTML = '<div class="loading"></div> PROCESSING...';
+            submitBtn.disabled = true;
+            
+            // Collect form data
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                idNumber: document.getElementById('idNumber').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                loanAmount: document.getElementById('loanAmount').value
+            };
+            
+            console.log('Registration Data:', formData);
+            
+            // Simulate processing
+            setTimeout(() => {
+                submitBtn.innerHTML = 'APPLY FOR LOAN <span class="arrow">→</span>';
+                submitBtn.disabled = false;
+                successMessage.style.display = 'block';
+                
+                // Reset form
+                document.getElementById('registration-form').reset();
+                amountDisplay.textContent = 'KSH 5,000';
+                loanSlider.value = 5000;
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 5000);
+            }, 2000);
+        });
+
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const loginBtn = document.getElementById('loginBtn');
+            const loginSuccessMessage = document.getElementById('loginSuccessMessage');
+            
+            // Show loading state
+            loginBtn.innerHTML = '<div class="loading"></div> LOGGING IN...';
+            loginBtn.disabled = true;
+            
+            // Collect login data
+            const loginData = {
+                phoneNumber: document.getElementById('loginPhone').value,
+                idNumber: document.getElementById('loginId').value
+            };
+            
+            console.log('Login Data:', loginData);
+            
+            // Simulate processing
+            setTimeout(() => {
+                loginBtn.innerHTML = 'LOGIN <span class="arrow">→</span>';
+                loginBtn.disabled = false;
+                loginSuccessMessage.style.display = 'block';
+                
+                // Reset form
+                document.getElementById('login-form').reset();
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    loginSuccessMessage.style.display = 'none';
+                }, 5000);
+            }, 1500);
+        });
+
+        // Phone number formatting
+        document.getElementById('phoneNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0 && !value.startsWith('254')) {
+                if (value.startsWith('0')) {
+                    value = '254' + value.substring(1);
+                } else if (value.startsWith('7') || value.startsWith('1')) {
+                    value = '254' + value;
+                }
+            }
+            e.target.value = value ? '+' + value : '';
+        });
+
+        document.getElementById('loginPhone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0 && !value.startsWith('254')) {
+                if (value.startsWith('0')) {
+                    value = '254' + value.substring(1);
+                } else if (value.startsWith('7') || value.startsWith('1')) {
+                    value = '254' + value;
+                }
+            }
+            e.target.value = value ? '+' + value : '';
+        });
+    </script>
+</body>
+</html>
